@@ -1,4 +1,5 @@
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import numpy as np
 import os
 import sys
@@ -307,8 +308,12 @@ class BaseParser(object):
 
             input_ids = self._bert_tokenizer.convert_tokens_to_ids(tokens)
             if len(sentence) + 2 > SENTENCE_MAX_LEN or len(input_ids) > BERT_MAX_LEN:
-                raise ValueError("Sentence of length {} is too long to be parsed".format(
-                    len(sentence)))
+                # raise ValueError("Sentence of length {} | {} is too long to be parsed".format(
+                #     len(sentence), len(input_ids)))
+                sentences[snum] = ["DUMMY"]
+                input_ids = [101, 24369, 102]
+                word_end_mask = [1, 1, 1]
+
 
             subword_max_len = max(subword_max_len, len(input_ids))
 
